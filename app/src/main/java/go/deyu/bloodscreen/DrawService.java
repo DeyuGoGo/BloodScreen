@@ -33,7 +33,7 @@ public class DrawService extends Service implements BloodControllerInterface{
     }
 
     private void initBloodView(){
-        mBloodView = new BloodView(this);
+        mBloodView = new RandomSizeBloodView(this);
         WindowManager.LayoutParams params = new WindowManager.LayoutParams();
         params.width = WindowManager.LayoutParams.MATCH_PARENT;
         params.height = WindowManager.LayoutParams.MATCH_PARENT;
