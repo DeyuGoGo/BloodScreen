@@ -63,10 +63,11 @@ public class BloodView extends View {
     }
 
     private void drawBloods(Canvas canvas){
-        for(int i = 0 ; i < app.App.model.getBlood() ; i++){
+        for(int i = 0, len = app.App.model.getBlood(); i < len; i++){
             drawBlood(canvas);
         }
     }
+    
     private void drawBlood(Canvas canvas){
         Random random = new Random();
         int x = random.nextInt((m_nScreenW - 2));
