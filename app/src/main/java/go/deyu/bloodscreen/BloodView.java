@@ -18,11 +18,16 @@ import go.deyu.bloodscreen.app.app;
  * TODO: document your custom view class.
  */
 public class BloodView extends View {
+
+    protected Random mRandom;
+
     private final String TAG = getClass().getSimpleName();
 
     private holder mHolder = null;
     private int m_nScreenW , m_nScreenH ;
     private Paint mBloodPaint ;
+    private int defaultBloodRadius = 2;
+
 
     public BloodView(Context context) {
         super(context);
@@ -40,6 +45,7 @@ public class BloodView extends View {
     }
 
     private void init() {
+        mRandom = new Random();
         mBloodPaint = new Paint();
         mBloodPaint.setColor(Color.RED);
     }
@@ -69,10 +75,14 @@ public class BloodView extends View {
     }
     
     private void drawBlood(Canvas canvas){
-        Random random = new Random();
-        int x = random.nextInt((m_nScreenW - 2));
-        int y = random.nextInt((m_nScreenH - 2));
-        canvas.drawCircle(x, y, 2, mBloodPaint);
+        int size = getBloodRadius();
+        int x = mRandom.nextInt((m_nScreenW));
+        int y = mRandom.nextInt((m_nScreenH));
+        canvas.drawCircle(x, y, size , mBloodPaint);
+    }
+
+    protected int getBloodRadius(){
+        return defaultBloodRadius;
     }
 
 // no use
