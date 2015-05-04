@@ -94,6 +94,7 @@ public class DrawService extends Service implements BloodControllerInterface{
     @Override
     public void cleanBlood() {
         model.setBlood(0);
+        mBloodView.clean();
         mBloodView.postInvalidate();
     }
 }
