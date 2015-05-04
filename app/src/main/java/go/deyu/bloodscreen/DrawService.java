@@ -6,6 +6,8 @@ import android.graphics.PixelFormat;
 import android.os.IBinder;
 import android.view.WindowManager;
 
+import java.util.Timer;
+
 import go.deyu.bloodscreen.app.app;
 
 public class DrawService extends Service implements BloodControllerInterface{
@@ -13,6 +15,8 @@ public class DrawService extends Service implements BloodControllerInterface{
     private BloodView mBloodView;
     private BloodModelInterface model ;
     private PhoneUseReceiver mPhoneUseReceiver;
+    private final int mAddBloodTime = 30;//second
+    private Timer mAddBloodTimer;
     public DrawService() {
     }
     /**
@@ -25,11 +29,12 @@ public class DrawService extends Service implements BloodControllerInterface{
         this.model = app.App.model;
         initReceiver();
         initBloodView();
+        startAddBloodTimer();
     }
 
     private void initReceiver(){
         mPhoneUseReceiver = new PhoneUseReceiver();
-        registerReceiver(mPhoneUseReceiver,mPhoneUseReceiver.getIntentFilter());
+        registerReceiver(mPhoneUseReceiver, mPhoneUseReceiver.getIntentFilter());
     }
 
     private void initBloodView(){
@@ -45,6 +50,7 @@ public class DrawService extends Service implements BloodControllerInterface{
         wm.addView(mBloodView, params);
     }
 
+
     /**
      * Called by the system to notify a Service that it is no longer used and is being removed.  The
      * service should clean up any resources it holds (threads, registered
@@ -58,6 +64,7 @@ public class DrawService extends Service implements BloodControllerInterface{
         WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE);
         wm.removeView(mBloodView);
         if(mPhoneUseReceiver!=null)unregisterReceiver(mPhoneUseReceiver);
+        stopAddBloodTimer();
     }
 
 
@@ -66,6 +73,15 @@ public class DrawService extends Service implements BloodControllerInterface{
     public IBinder onBind(Intent intent) {
         throw new UnsupportedOperationException("Not yet implemented");
     }
+
+    private void startAddBloodTimer(){
+        mAddBloodTimer = new Timer();
+        mAddBloodTimer.scheduleAtFixedRate(new AddBloodTimeTask(this), 1, mAddBloodTime * 1000);
+    }
+    private void stopAddBloodTimer(){
+        if(mAddBloodTimer != null) mAddBloodTimer.cancel();
+    }
+
 
     @Override
     public void addBlood() {
