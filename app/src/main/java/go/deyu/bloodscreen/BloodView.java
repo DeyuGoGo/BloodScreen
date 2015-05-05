@@ -5,11 +5,9 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Point;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.WindowManager;
 
 import java.util.Random;
 
@@ -51,26 +49,25 @@ public class BloodView extends View {
         mRandom = new Random();
         mBloodPaint = new Paint();
         mBloodPaint.setColor(Color.RED);
-        initDrawConfig();
     }
 
 
     @Override
     protected void onDraw(Canvas canvas) {
+        LOG.d(TAG,"OnDraw");
         drawBloods(mHolder.canvas);
         Bitmap bitmap = mHolder.bitmap;
+        LOG.d(TAG,"OnDraw : bitmap.getWidth() : " + bitmap.getWidth());
         canvas.drawBitmap(bitmap,
                 new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight()),
                 new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight()), null);
     }
 
-    private void initDrawConfig() {
-        WindowManager winMgr = (WindowManager) getContext().getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
-        Point size = new Point();
-        winMgr.getDefaultDisplay().getSize(size);
-        m_nScreenW = size.x;
-        m_nScreenH = size.y;
-        LOG.d(TAG, "m_nScreenW: " + m_nScreenW + " m_nScreenH : " + m_nScreenH);
+    private void initDrawConfig(int w , int h) {
+        if (mHolder.bitmap != null) {
+            mHolder.bitmap.recycle();
+        }
+        mHolder.init(Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888));
     }
 
     private void drawBloods(Canvas canvas) {
@@ -83,8 +80,8 @@ public class BloodView extends View {
 
     private void drawBlood(Canvas canvas) {
         int size = getBloodRadius();
-        int x = mRandom.nextInt((m_nScreenW));
-        int y = mRandom.nextInt((m_nScreenH));
+        int x = mRandom.nextInt((mHolder.maxX));
+        int y = mRandom.nextInt((mHolder.maxY));
         canvas.drawCircle(x, y, size, mBloodPaint);
     }
 
@@ -92,20 +89,25 @@ public class BloodView extends View {
         return defaultBloodRadius;
     }
 
-    // no use
     class holder {
         public int blood_number = 0;
         public Canvas canvas = null;
         public Bitmap bitmap = null;
+        public int maxX;
+        public int maxY;
         public holder(){
             canvas = new Canvas();
         }
+
         public void init(Bitmap bitmap){
             if(bitmap == null )throw new NullPointerException("Where is bitmap for holder init");
             this.bitmap = bitmap;
             if(canvas!=null){
                 canvas.setBitmap(bitmap);
             }
+            maxX = this.bitmap.getWidth();
+            maxY = this.bitmap.getHeight();
+            LOG.d(TAG,"maxX:" + maxX);
             blood_number = 0;
         }
     }
@@ -123,11 +125,8 @@ public class BloodView extends View {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        initDrawConfig();
-        if (mHolder.bitmap != null) {
-            mHolder.bitmap.recycle();
-        }
-        mHolder.init(Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888));
+        initDrawConfig(w, h);
+        LOG.d(TAG, "onSizeChanged" + "w: " + w + " h : " + h);
     }
 
     public void clean(){

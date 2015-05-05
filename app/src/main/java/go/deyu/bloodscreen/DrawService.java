@@ -2,6 +2,7 @@ package go.deyu.bloodscreen;
 
 import android.app.Service;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.PixelFormat;
 import android.os.IBinder;
 import android.view.WindowManager;
@@ -17,6 +18,8 @@ public class DrawService extends Service implements BloodControllerInterface{
     private PhoneUseReceiver mPhoneUseReceiver;
     private final int mAddBloodTime = 30;//second
     private Timer mAddBloodTimer;
+    private WindowManager wm;
+
     public DrawService() {
     }
     /**
@@ -25,6 +28,7 @@ public class DrawService extends Service implements BloodControllerInterface{
     @Override
     public void onCreate() {
         super.onCreate();
+        wm = (WindowManager) getSystemService(WINDOW_SERVICE);
         app.App.controller = this;
         this.model = app.App.model;
         initReceiver();
@@ -46,10 +50,17 @@ public class DrawService extends Service implements BloodControllerInterface{
         params.flags |= WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
         params.flags |= WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
         params.format = PixelFormat.TRANSLUCENT;
-        WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE);
         wm.addView(mBloodView, params);
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if(mBloodView!=null){
+            wm.removeView(mBloodView);
+        }
+        initBloodView();
+    }
 
     /**
      * Called by the system to notify a Service that it is no longer used and is being removed.  The
