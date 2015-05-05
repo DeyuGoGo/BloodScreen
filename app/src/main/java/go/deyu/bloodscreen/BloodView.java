@@ -3,14 +3,14 @@ package go.deyu.bloodscreen;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
 
 import java.util.Random;
 
+import go.deyu.bloodscreen.BloodBitmapFactory.BloodBitmapFactory;
+import go.deyu.bloodscreen.BloodBitmapFactory.ResourceBloodBitmapFactory;
 import go.deyu.bloodscreen.app.app;
 
 
@@ -24,9 +24,8 @@ public class BloodView extends View {
     private final String TAG = getClass().getSimpleName();
 
     private holder mHolder = null;
-    private int m_nScreenW, m_nScreenH;
-    private Paint mBloodPaint;
     private int defaultBloodRadius = 2;
+    private BloodBitmapFactory mBloodBitmapFactory = null;
 
 
     public BloodView(Context context) {
@@ -47,8 +46,11 @@ public class BloodView extends View {
     private void init() {
         mHolder = new holder();
         mRandom = new Random();
-        mBloodPaint = new Paint();
-        mBloodPaint.setColor(Color.RED);
+        mBloodBitmapFactory = new ResourceBloodBitmapFactory(getContext());
+    }
+
+    public void setBloodBitmapFactory(BloodBitmapFactory factory){
+        this.mBloodBitmapFactory = factory;
     }
 
 
@@ -82,7 +84,9 @@ public class BloodView extends View {
         int size = getBloodRadius();
         int x = mRandom.nextInt((mHolder.maxX));
         int y = mRandom.nextInt((mHolder.maxY));
-        canvas.drawCircle(x, y, size, mBloodPaint);
+        Bitmap bitmap = mBloodBitmapFactory.createBloodBitmap(size,size);
+        LOG.d(TAG, "getBloodRadius size : " + size + " x : " + x + " y : " + y);
+        canvas.drawBitmap(bitmap, x, y, null);
     }
 
     protected int getBloodRadius() {

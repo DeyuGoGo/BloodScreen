@@ -9,7 +9,8 @@ import android.util.AttributeSet;
  */
 public class RandomSizeBloodView extends BloodView {
 
-    private int mBloodRadiusSizeMAX = 30;
+    private int mBloodRadiusSizeMAX = 80;
+
     public RandomSizeBloodView(Context context) {
         super(context);
     }
@@ -24,6 +25,7 @@ public class RandomSizeBloodView extends BloodView {
 
     @Override
     protected int getBloodRadius() {
-        return mRandom.nextInt(mBloodRadiusSizeMAX);
+        return mRandom.nextInt(mBloodRadiusSizeMAX)+1;
     }
+
 }
