@@ -42,7 +42,7 @@ public class DrawService extends Service implements BloodControllerInterface{
         WindowManager.LayoutParams params = new WindowManager.LayoutParams();
         params.width = WindowManager.LayoutParams.MATCH_PARENT;
         params.height = WindowManager.LayoutParams.MATCH_PARENT;
-        params.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
+        params.type = WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY;
         params.flags |= WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
         params.flags |= WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
         params.format = PixelFormat.TRANSLUCENT;
