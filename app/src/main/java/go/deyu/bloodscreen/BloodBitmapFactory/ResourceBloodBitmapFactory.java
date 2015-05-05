@@ -1,31 +1,40 @@
 package go.deyu.bloodscreen.BloodBitmapFactory;
 
+import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
+import android.graphics.BitmapFactory;
+
+import java.util.Random;
+
+import go.deyu.bloodscreen.R;
 
 /**
  * Created by huangeyu on 15/5/5.
  */
 public class ResourceBloodBitmapFactory implements BloodBitmapFactory{
-    private Paint p;
+    private Bitmap[] bitmaps;
+    private Context mContext;
+    private Random mRandom;
 
-    public ResourceBloodBitmapFactory(){
-        initPaint();
+    public ResourceBloodBitmapFactory(Context context){
+        mContext = context;
+        mRandom = new Random();
+        init();
     }
 
-    private void initPaint(){
-        p = new Paint();
-        p.setColor(Color.RED);
+    private void init(){
+        Resources res = mContext.getResources();
+        bitmaps = new Bitmap[4];
+        bitmaps[0] = BitmapFactory.decodeResource(res, R.drawable.blood1);
+        bitmaps[1] = BitmapFactory.decodeResource(res, R.drawable.blood2);
+        bitmaps[2] = BitmapFactory.decodeResource(res, R.drawable.blood3);
+        bitmaps[3] = BitmapFactory.decodeResource(res, R.drawable.blood4);
     }
 
     @Override
     public Bitmap createBloodBitmap(int w, int h) {
-        Bitmap b = Bitmap.createBitmap(w , h , Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(b);
-        float radius = w > h ? h / 2 : w / 2 ;
-        canvas.drawCircle(radius , radius , radius , p);
-        return b;
+        int randomBloodindex  = mRandom.nextInt(4);
+        return Bitmap.createScaledBitmap( bitmaps[randomBloodindex], w , h ,true);
     }
 }
