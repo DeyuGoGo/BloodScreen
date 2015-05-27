@@ -24,6 +24,8 @@ public class app extends Application{
         super.onCreate();
         App = this;
         AppContextSingleton.initialize(this);
+        DeviceStatus.initialize(this);
         model = new BloodModel(this);
     }
+
 }

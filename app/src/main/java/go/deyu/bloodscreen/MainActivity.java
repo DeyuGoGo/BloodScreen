@@ -13,6 +13,7 @@ import go.deyu.bloodscreen.app.app;
 
 public class MainActivity extends ActionBarActivity {
 
+    private BloodControllerInterface controller = app.App.controller;
     @OnClick(R.id.main_btn_start)
     public void start(){
         startService(new Intent(this,DrawService.class));
@@ -25,7 +26,10 @@ public class MainActivity extends ActionBarActivity {
 
     @OnClick(R.id.main_btn_clean)
     public void clean(){
-        app.App.controller.cleanBlood();
+        controller = app.App.controller;
+        if(controller!=null){
+            controller.cleanBlood();
+        }
     }
 
 
