@@ -2,7 +2,8 @@ package go.deyu.bloodscreen;
 
 import java.util.TimerTask;
 
-import go.deyu.bloodscreen.app.DeviceStatus;
+import go.deyu.util.DeviceStatus;
+
 
 /**
  * Created by huangeyu on 15/5/4.

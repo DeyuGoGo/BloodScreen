@@ -8,7 +8,7 @@ import android.content.SharedPreferences;
  */
 public class BloodModel implements BloodModelInterface{
     private int BloodCount ;
-    final SharedPreferences prefs;
+    private final SharedPreferences prefs;
     private final String BLOOD_PERFERANCE_NAME = "Blood_Perferance";
     private final String BLOOD_COUNT_KEY = "Blood_Count";
     public BloodModel(Context context){

@@ -26,7 +26,6 @@ public class MainActivity extends ActionBarActivity {
 
     @OnClick(R.id.main_btn_clean)
     public void clean(){
-        controller = app.App.controller;
         if(controller!=null){
             controller.cleanBlood();
         }

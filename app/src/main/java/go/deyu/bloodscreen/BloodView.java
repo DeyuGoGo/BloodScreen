@@ -12,6 +12,7 @@ import java.util.Random;
 import go.deyu.bloodscreen.BloodBitmapFactory.BloodBitmapFactory;
 import go.deyu.bloodscreen.BloodBitmapFactory.ResourceBloodBitmapFactory;
 import go.deyu.bloodscreen.app.app;
+import go.deyu.util.LOG;
 
 
 /**
@@ -56,7 +57,7 @@ public class BloodView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        LOG.d(TAG,"OnDraw");
+        LOG.d(TAG, "OnDraw");
         drawBloods(mHolder.canvas);
         Bitmap bitmap = mHolder.bitmap;
         LOG.d(TAG,"OnDraw : bitmap.getWidth() : " + bitmap.getWidth());

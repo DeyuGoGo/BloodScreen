@@ -5,6 +5,9 @@ import android.app.Application;
 import go.deyu.bloodscreen.BloodControllerInterface;
 import go.deyu.bloodscreen.BloodModel;
 import go.deyu.bloodscreen.BloodModelInterface;
+import go.deyu.util.AppContextSingleton;
+import go.deyu.util.DeviceStatus;
+import go.deyu.util.LOG;
 
 /**
  * Created by huangeyu on 15/4/28.
@@ -25,6 +28,7 @@ public class app extends Application{
         App = this;
         AppContextSingleton.initialize(this);
         DeviceStatus.initialize(this);
+        LOG.LOGTAG = getString(getApplicationInfo().labelRes);
         model = new BloodModel(this);
     }
 
