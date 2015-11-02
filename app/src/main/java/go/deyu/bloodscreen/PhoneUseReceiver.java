@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 
-import go.deyu.bloodscreen.app.app;
-
 public class PhoneUseReceiver extends BroadcastReceiver {
 
     public PhoneUseReceiver() {
@@ -22,6 +20,14 @@ public class PhoneUseReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        app.App.controller.addBlood();
+        Intent i = new Intent(context , DrawService.class);
+        if(intent.getAction().equals(Intent.ACTION_SCREEN_ON)){
+            i.setAction(DrawService.ACTION_START_ADD_TIMER);
+            context.startService(i);
+        }
+        if(intent.getAction().equals(Intent.ACTION_SCREEN_OFF)){
+            i.setAction(DrawService.ACTION_CANCEL_ADD_TIMER);
+            context.startService(i);
+        }
     }
 }

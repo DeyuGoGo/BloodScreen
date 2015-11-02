@@ -13,6 +13,11 @@ import go.deyu.bloodscreen.app.app;
 
 public class DrawService extends Service implements BloodControllerInterface{
     private final String TAG = getClass().getSimpleName();
+
+    public static final String ACTION_START_ADD_TIMER = "action.start.add.timer" ;
+    public static final String ACTION_CANCEL_ADD_TIMER = "action.cancel.add.timer" ;
+
+
     private BloodView mBloodView;
     private BloodModelInterface model ;
     private PhoneUseReceiver mPhoneUseReceiver;
@@ -33,7 +38,21 @@ public class DrawService extends Service implements BloodControllerInterface{
         this.model = app.App.model;
         initReceiver();
         initBloodView();
-        startAddBloodTimer();
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+
+        if(intent == null || intent.getAction() ==null)return START_STICKY;
+
+        if(intent.getAction().equals(ACTION_START_ADD_TIMER)){
+            startAddBloodTimer();
+        }
+        if(intent.getAction().equals(ACTION_CANCEL_ADD_TIMER)){
+            stopAddBloodTimer();
+        }
+
+        return super.onStartCommand(intent, flags, startId);
     }
 
     private void initReceiver(){
