@@ -49,7 +49,7 @@ public class DrawService extends Service implements BloodControllerInterface{
         params.type = WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY;
         params.flags |= WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
         params.flags |= WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
-        params.format = PixelFormat.TRANSLUCENT;
+        params.format = PixelFormat.TRANSPARENT;
         wm.addView(mBloodView, params);
     }
 
