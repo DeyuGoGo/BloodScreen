@@ -12,7 +12,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="start"
+        android:text="show"
         android:id="@+id/main_btn_start"
         android:layout_below="@+id/textView"
         android:layout_alignParentLeft="true"
@@ -22,7 +22,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="stop"
+        android:text="notShow"
         android:id="@+id/main_stop_btn"
         android:layout_below="@+id/main_btn_start"
         android:layout_alignParentLeft="true"

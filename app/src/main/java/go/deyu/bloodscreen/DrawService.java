@@ -10,20 +10,30 @@ import android.view.WindowManager;
 import java.util.Timer;
 
 import go.deyu.bloodscreen.app.app;
+import go.deyu.util.LOG;
 
 public class DrawService extends Service implements BloodControllerInterface{
     private final String TAG = getClass().getSimpleName();
 
     public static final String ACTION_START_ADD_TIMER = "action.start.add.timer" ;
+
     public static final String ACTION_CANCEL_ADD_TIMER = "action.cancel.add.timer" ;
 
+    public static final String ACTION_CLEAN = "action.clean" ;
 
-    private BloodView mBloodView;
+    public static final String ACTION_SHOW = "action.show" ;
+
+    public static final String ACTION_NOT_SHOW = "action.not.show" ;
+
+
+
+    private BloodView mBloodView = null;
     private BloodModelInterface model ;
     private PhoneUseReceiver mPhoneUseReceiver;
-    private final int mAddBloodTime = 30;//second
-    private Timer mAddBloodTimer;
+    private final int mAddBloodTime = 1;//second
+    private Timer mAddBloodTimer = null;
     private WindowManager wm;
+    private boolean mIsShowView = false;
 
     public DrawService() {
     }
@@ -34,10 +44,8 @@ public class DrawService extends Service implements BloodControllerInterface{
     public void onCreate() {
         super.onCreate();
         wm = (WindowManager) getSystemService(WINDOW_SERVICE);
-        app.App.controller = this;
         this.model = app.App.model;
         initReceiver();
-        initBloodView();
     }
 
     @Override
@@ -49,10 +57,18 @@ public class DrawService extends Service implements BloodControllerInterface{
             startAddBloodTimer();
         }
         if(intent.getAction().equals(ACTION_CANCEL_ADD_TIMER)){
-            stopAddBloodTimer();
+            cancelAddBloodTimer();
         }
-
-        return super.onStartCommand(intent, flags, startId);
+        if(intent.getAction().equals(ACTION_CLEAN)){
+            cleanBlood();
+        }
+        if(intent.getAction().equals(ACTION_SHOW)){
+            showBloodView();
+        }
+        if(intent.getAction().equals(ACTION_NOT_SHOW)){
+            dismissBloodView();
+        }
+        return START_STICKY;
     }
 
     private void initReceiver(){
@@ -60,25 +76,35 @@ public class DrawService extends Service implements BloodControllerInterface{
         registerReceiver(mPhoneUseReceiver, mPhoneUseReceiver.getIntentFilter());
     }
 
-    private void initBloodView(){
-        mBloodView = new RandomSizeBloodView(this);
-        WindowManager.LayoutParams params = new WindowManager.LayoutParams();
-        params.width = WindowManager.LayoutParams.MATCH_PARENT;
-        params.height = WindowManager.LayoutParams.MATCH_PARENT;
-        params.type = WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY;
-        params.flags |= WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
-        params.flags |= WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
-        params.format = PixelFormat.TRANSPARENT;
-        wm.addView(mBloodView, params);
+    private void showBloodView(){
+        if(mBloodView==null) {
+            mBloodView = new RandomSizeBloodView(this);
+            WindowManager.LayoutParams params = new WindowManager.LayoutParams();
+            params.width = WindowManager.LayoutParams.MATCH_PARENT;
+            params.height = WindowManager.LayoutParams.MATCH_PARENT;
+            params.type = WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY;
+            params.flags |= WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+            params.flags |= WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
+            params.format = PixelFormat.TRANSPARENT;
+            wm.addView(mBloodView, params);
+            mIsShowView = true;
+        }
+    }
+    private void dismissBloodView(){
+        if(mBloodView!=null){
+            wm.removeView(mBloodView);
+            mBloodView = null;
+            mIsShowView = false;
+        }
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        if(mBloodView!=null){
-            wm.removeView(mBloodView);
+        if(mIsShowView){
+            dismissBloodView();
+            showBloodView();
         }
-        initBloodView();
     }
 
     /**
@@ -90,41 +116,51 @@ public class DrawService extends Service implements BloodControllerInterface{
     @Override
     public void onDestroy() {
         super.onDestroy();
-        app.App.controller = null;
-        WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE);
-        wm.removeView(mBloodView);
-        if(mPhoneUseReceiver!=null)unregisterReceiver(mPhoneUseReceiver);
-        stopAddBloodTimer();
+        if(mPhoneUseReceiver!=null)
+            unregisterReceiver(mPhoneUseReceiver);
+        if(mIsShowView)
+            dismissBloodView();
+        cancelAddBloodTimer();
     }
 
 
-
+//  this server not use bind function
     @Override
     public IBinder onBind(Intent intent) {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
-    private void startAddBloodTimer(){
-        mAddBloodTimer = new Timer();
-        mAddBloodTimer.scheduleAtFixedRate(new AddBloodTimeTask(this), 1, mAddBloodTime * 1000);
-    }
-    private void stopAddBloodTimer(){
-        if(mAddBloodTimer != null) mAddBloodTimer.cancel();
-    }
-
-
     @Override
     public void addBlood() {
+        LOG.d(TAG, "addBlood");
         int i = model.getBlood();
         i++;
         model.setBlood(i);
-        mBloodView.postInvalidate();
+        if(mIsShowView)
+            mBloodView.postInvalidate();
     }
 
     @Override
     public void cleanBlood() {
         model.setBlood(0);
-        mBloodView.clean();
-        mBloodView.postInvalidate();
+        if(mIsShowView){
+            mBloodView.clean();
+            mBloodView.postInvalidate();
+        }
+
+    }
+
+    private void startAddBloodTimer(){
+        if(mAddBloodTimer == null) {
+            mAddBloodTimer = new Timer();
+            mAddBloodTimer.scheduleAtFixedRate(new AddBloodTimeTask(this), 1, mAddBloodTime * 1000);
+        }
+    }
+
+    private void cancelAddBloodTimer(){
+        if(mAddBloodTimer != null){
+            mAddBloodTimer.cancel();
+            mAddBloodTimer = null;
+        }
     }
 }

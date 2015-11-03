@@ -1,8 +1,8 @@
 package go.deyu.bloodscreen;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -13,22 +13,29 @@ import go.deyu.bloodscreen.app.app;
 
 public class MainActivity extends ActionBarActivity {
 
-    private BloodControllerInterface controller = app.App.controller;
+    private final String TAG = getClass().getSimpleName();
+
+    private BloodModelInterface model;
+
     @OnClick(R.id.main_btn_start)
     public void start(){
-        startService(new Intent(this,DrawService.class));
+        Intent i = new Intent(this,DrawService.class);
+        i.setAction(DrawService.ACTION_SHOW);
+        startService(i);
     }
 
     @OnClick(R.id.main_stop_btn)
     public void stop(){
-        stopService(new Intent(this, DrawService.class));
+        Intent i = new Intent(this,DrawService.class);
+        i.setAction(DrawService.ACTION_NOT_SHOW);
+        stopService(i);
     }
 
     @OnClick(R.id.main_btn_clean)
     public void clean(){
-        if(controller!=null){
-            controller.cleanBlood();
-        }
+        Intent i = new Intent(this,DrawService.class);
+        i.setAction(DrawService.ACTION_CLEAN);
+        startService(i);
     }
 
 
@@ -36,7 +43,8 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
+        this.model = app.App.model;
     }
 
     @Override

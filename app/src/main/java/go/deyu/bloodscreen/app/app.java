@@ -2,7 +2,6 @@ package go.deyu.bloodscreen.app;
 
 import android.app.Application;
 
-import go.deyu.bloodscreen.BloodControllerInterface;
 import go.deyu.bloodscreen.BloodModel;
 import go.deyu.bloodscreen.BloodModelInterface;
 import go.deyu.util.AppContextSingleton;
@@ -15,8 +14,7 @@ import go.deyu.util.LOG;
 public class app extends Application{
 
     public volatile static app App;
-    public BloodModelInterface model ;
-    public BloodControllerInterface controller;
+    public static BloodModelInterface model ;
 
     public app() {
         super();
