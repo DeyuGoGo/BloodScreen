@@ -7,36 +7,43 @@ import android.content.SharedPreferences;
  * Created by huangeyu on 15/4/28.
  */
 public class BloodModel implements BloodModelInterface{
-    private int BloodCount = 0;
+    private long BloodCount = 0;
+    private long UseTime = 0;
+    private int howManySecondOneBlood = 5;
     private final SharedPreferences prefs;
     private final String BLOOD_PERFERANCE_NAME = "Blood_Perferance";
-    private final String BLOOD_COUNT_KEY = "Blood_Count";
+    private final String KEY_USE_TIME_COUNT = "use.time.count";
 
     public BloodModel(Context context){
         prefs = context.getSharedPreferences(BLOOD_PERFERANCE_NAME, Context.MODE_PRIVATE);
-        BloodCount = getBloodCount();
-    }
-
-
-
-    @Override
-    public void setBlood(int blood) {
-        this.BloodCount = blood;
-        save();
+        UseTime = getUseTimeSp();
     }
 
     @Override
-    public int getBlood() {
+    public long getBlood() {
+        BloodCount = UseTime / howManySecondOneBlood;
         return BloodCount;
+    }
+
+
+    @Override
+    public long getUseTime() {
+        return UseTime;
+    }
+
+    @Override
+    public void setUseTime(long time) {
+        this.UseTime = time;
+        save();
     }
 
     private void save(){
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putInt(BLOOD_COUNT_KEY , BloodCount);
+        editor.putLong(KEY_USE_TIME_COUNT, UseTime);
         editor.commit();
     };
 
-    private int getBloodCount(){
-        return prefs.getInt(BLOOD_COUNT_KEY , 0);
+    private long getUseTimeSp(){
+        return prefs.getLong(KEY_USE_TIME_COUNT, 0);
     };
 }

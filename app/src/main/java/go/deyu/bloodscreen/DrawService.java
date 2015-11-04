@@ -9,7 +9,9 @@ import android.view.WindowManager;
 
 import java.util.Timer;
 
+import go.deyu.bloodscreen.alarm.ChangeDayAlarm;
 import go.deyu.bloodscreen.app.app;
+import go.deyu.util.DailyCheck;
 import go.deyu.util.LOG;
 
 public class DrawService extends Service implements BloodControllerInterface{
@@ -25,13 +27,13 @@ public class DrawService extends Service implements BloodControllerInterface{
 
     public static final String ACTION_NOT_SHOW = "action.not.show" ;
 
-
+    public static final String ACTION_CHECK_CHANGE_DAY = "action.check.change.day" ;
 
     private BloodView mBloodView = null;
     private BloodModelInterface model ;
     private PhoneUseReceiver mPhoneUseReceiver;
     private final int mAddBloodTime = 1;//second
-    private Timer mAddBloodTimer = null;
+    private Timer mAddUseTimer = null;
     private WindowManager wm;
     private boolean mIsShowView = false;
 
@@ -51,7 +53,14 @@ public class DrawService extends Service implements BloodControllerInterface{
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        if(intent == null || intent.getAction() ==null)return START_STICKY;
+        if(intent == null || intent.getAction() ==null){
+            checkDayChange();
+            if(SettingConfig.getIsCountingOpen(this))
+                startAddBloodTimer();
+            if(SettingConfig.getIsLoveOpen(this))
+                showBloodView();
+            return START_STICKY;
+        }
 
         if(intent.getAction().equals(ACTION_START_ADD_TIMER)){
             startAddBloodTimer();
@@ -67,6 +76,9 @@ public class DrawService extends Service implements BloodControllerInterface{
         }
         if(intent.getAction().equals(ACTION_NOT_SHOW)){
             dismissBloodView();
+        }
+        if(intent.getAction().equals(ACTION_CHECK_CHANGE_DAY)){
+            checkDayChange();
         }
         return START_STICKY;
     }
@@ -131,18 +143,18 @@ public class DrawService extends Service implements BloodControllerInterface{
     }
 
     @Override
-    public void addBlood() {
+    public void addUseSecond() {
         LOG.d(TAG, "addBlood");
-        int i = model.getBlood();
+        long i = model.getUseTime();
         i++;
-        model.setBlood(i);
+        model.setUseTime(i);
         if(mIsShowView)
             mBloodView.postInvalidate();
     }
 
     @Override
     public void cleanBlood() {
-        model.setBlood(0);
+        model.setUseTime(0);
         if(mIsShowView){
             mBloodView.clean();
             mBloodView.postInvalidate();
@@ -150,17 +162,30 @@ public class DrawService extends Service implements BloodControllerInterface{
 
     }
 
+    private void checkDayChange(){
+        if(DailyCheck.isChangeDay())
+            resetDailyCount();
+    }
+
+    private void resetDailyCount(){
+        Intent i = new Intent(this,DrawService.class);
+        i.setAction(ACTION_CHECK_CHANGE_DAY);
+        ChangeDayAlarm.setChangeDayAlarmStartService(this,i);
+        cleanBlood();
+        DailyCheck.updateDayTime();
+    }
+
     private void startAddBloodTimer(){
-        if(mAddBloodTimer == null) {
-            mAddBloodTimer = new Timer();
-            mAddBloodTimer.scheduleAtFixedRate(new AddBloodTimeTask(this), 1, mAddBloodTime * 1000);
+        if(mAddUseTimer == null) {
+            mAddUseTimer = new Timer();
+            mAddUseTimer.scheduleAtFixedRate(new AddUseTimeTask(this), 1, mAddBloodTime * 1000);
         }
     }
 
     private void cancelAddBloodTimer(){
-        if(mAddBloodTimer != null){
-            mAddBloodTimer.cancel();
-            mAddBloodTimer = null;
+        if(mAddUseTimer != null){
+            mAddUseTimer.cancel();
+            mAddUseTimer = null;
         }
     }
 }

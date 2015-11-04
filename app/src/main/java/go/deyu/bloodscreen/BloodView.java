@@ -15,9 +15,6 @@ import go.deyu.bloodscreen.app.app;
 import go.deyu.util.LOG;
 
 
-/**
- * TODO: document your custom view class.
- */
 public class BloodView extends View {
 
     protected Random mRandom;
@@ -74,8 +71,8 @@ public class BloodView extends View {
     }
 
     private void drawBloods(Canvas canvas) {
-        int len = app.App.model.getBlood();
-        for (int i = mHolder.blood_number; i < len; i++) {
+        long len = app.App.model.getBlood();
+        for (long i = mHolder.blood_number; i < len; i++) {
             drawBlood(canvas);
         }
         mHolder.blood_number = len;
@@ -95,7 +92,7 @@ public class BloodView extends View {
     }
 
     class holder {
-        public int blood_number = 0;
+        public long blood_number = 0;
         public Canvas canvas = null;
         public Bitmap bitmap = null;
         public int maxX;
