@@ -12,6 +12,7 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -28,6 +29,7 @@ import go.deyu.bloodscreen.app.app;
 public class MainFragment extends BaseFragment{
 
     private Timer mUseTimer = null;
+    private long mTodayUseTime = 0 , mPercent = 0;
     
     @Bind(R.id.switch_love_open)Switch mSwitchLove;
 
@@ -50,7 +52,7 @@ public class MainFragment extends BaseFragment{
             super.handleMessage(msg);
             switch (msg.what){
                 case WHAT_UPDATE_TODAY_USE_TIME:
-                    mUseTimeTv.setText("Use time : " + app.App.model.getUseTime());
+                    mUseTimeTv.setText("Today Use time : " + mTodayUseTime + "\n Percent : " + mPercent + "%");
                     break;
             }
         }
@@ -96,6 +98,8 @@ public class MainFragment extends BaseFragment{
             mUseTimer.scheduleAtFixedRate(new TimerTask() {
                 @Override
                 public void run() {
+                    mTodayUseTime = app.App.model.getUseTime() ;
+                    setupPercent();
                     UiHandler.sendEmptyMessage(WHAT_UPDATE_TODAY_USE_TIME);
                 }
             }, 1, 1 * 1000);
@@ -116,6 +120,20 @@ public class MainFragment extends BaseFragment{
         else
             i.setAction(DrawService.ACTION_NOT_SHOW);
         getActivity().startService(i);
+    }
+
+    private void setupPercent(){
+        if(mTodayUseTime<=0){
+            mPercent =0 ;
+            return;
+        }
+        Calendar c = Calendar.getInstance();
+        int nowHour = c.get(Calendar.HOUR_OF_DAY);
+        int nowMin = c.get(Calendar.MINUTE);
+        int nowSecond = c.get(Calendar.SECOND);
+        long TodayPassTime = (nowHour*60*60) + (nowMin*60) + nowSecond;
+        mPercent = ((mTodayUseTime*100 )/ TodayPassTime);
+        if(mPercent > 100 ) mPercent = 100;
     }
 
     private void setCountingStart(boolean start){

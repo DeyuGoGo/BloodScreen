@@ -1,9 +1,11 @@
 package go.deyu.bloodscreen.app;
 
 import android.app.Application;
+import android.content.Intent;
 
 import go.deyu.bloodscreen.BloodModel;
 import go.deyu.bloodscreen.BloodModelInterface;
+import go.deyu.bloodscreen.DrawService;
 import go.deyu.util.AppContextSingleton;
 import go.deyu.util.DeviceStatus;
 import go.deyu.util.LOG;
@@ -28,6 +30,7 @@ public class app extends Application{
         DeviceStatus.initialize(this);
         LOG.LOGTAG = getString(getApplicationInfo().labelRes);
         model = new BloodModel(this);
+        startService(new Intent(this, DrawService.class));
     }
 
 }

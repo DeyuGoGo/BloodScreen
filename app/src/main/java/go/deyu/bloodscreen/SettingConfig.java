@@ -11,9 +11,10 @@ public class SettingConfig {
     private final static String KEY_SETTING_LOVE_OPEN = "love.open";
     private final static String KEY_SETTING_COUNTING_OPEN = "counting.open";
     private final static String KEY_SETTING_TOTAL_USE_TIME = "use.time";
+    private final static String KEY_SETTING_TOTAL_START_USE_TIME = "use.start.time";
 
     public static void setIsLoveOpen(Context context,boolean isOpen) {
-        SharedPreferences prefs = context.getSharedPreferences(PERFERANCE_SETTING , Context.MODE_PRIVATE );
+        SharedPreferences prefs = context.getSharedPreferences(PERFERANCE_SETTING , Context.MODE_PRIVATE  );
         SharedPreferences.Editor editor = prefs.edit();
         editor.putBoolean(KEY_SETTING_LOVE_OPEN , isOpen);
         editor.commit();
@@ -46,5 +47,17 @@ public class SettingConfig {
     public static long getTotalUseTime(Context context){
         SharedPreferences prefs = context.getSharedPreferences(PERFERANCE_SETTING , Context.MODE_PRIVATE );
         return prefs.getLong(KEY_SETTING_TOTAL_USE_TIME, 0);
+    }
+
+    public static void setTotalUseStartTime(Context context,long useTime) {
+        SharedPreferences prefs = context.getSharedPreferences(PERFERANCE_SETTING , Context.MODE_PRIVATE );
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putLong(KEY_SETTING_TOTAL_START_USE_TIME, useTime);
+        editor.commit();
+    }
+
+    public static long getTotalUseStartTime(Context context){
+        SharedPreferences prefs = context.getSharedPreferences(PERFERANCE_SETTING , Context.MODE_PRIVATE );
+        return prefs.getLong(KEY_SETTING_TOTAL_START_USE_TIME, 0);
     }
 }

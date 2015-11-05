@@ -9,7 +9,7 @@ import butterknife.ButterKnife;
 /**
  * Created by huangeyu on 15/11/3.
  */
-public class BaseFragment extends Fragment{
+public abstract class BaseFragment extends Fragment{
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);

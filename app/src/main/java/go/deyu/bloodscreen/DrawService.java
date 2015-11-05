@@ -63,6 +63,7 @@ public class DrawService extends Service implements BloodControllerInterface{
         }
 
         if(intent.getAction().equals(ACTION_START_ADD_TIMER)){
+            setupStartTime();
             startAddBloodTimer();
         }
         if(intent.getAction().equals(ACTION_CANCEL_ADD_TIMER)){
@@ -160,6 +161,12 @@ public class DrawService extends Service implements BloodControllerInterface{
             mBloodView.postInvalidate();
         }
 
+    }
+
+    private void setupStartTime(){
+        if(SettingConfig.getTotalUseStartTime(this) == 0){
+            SettingConfig.setTotalUseStartTime(this, (System.currentTimeMillis()/1000));
+        }
     }
 
     private void checkDayChange(){

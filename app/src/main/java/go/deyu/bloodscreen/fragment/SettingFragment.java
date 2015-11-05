@@ -13,6 +13,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 import go.deyu.bloodscreen.R;
 import go.deyu.bloodscreen.SettingConfig;
 
@@ -23,9 +24,19 @@ public class SettingFragment extends BaseFragment{
 
     private static final int WHAT_UPDATE_TOTAL_USE_TIME = 0x03;
 
+    private long mTotalUseTime = 0 , mTotalUsePercent = 0;
+
     private Timer mUseTimer = null;
 
     @Bind(R.id.tv_total_use_time)TextView mTotalUseTimeTv;
+
+    @OnClick(R.id.btn_init_total_time)
+    public void initTotalTime(View v){
+        cancelUpdateTodayUseTimer();
+        SettingConfig.setTotalUseTime(getActivity() , 0);
+        SettingConfig.setTotalUseStartTime(getActivity(),(System.currentTimeMillis()/1000));
+        startUpdateTodayUseTimer();
+    }
 
 
     private Handler UiHandler= new Handler(){
@@ -34,7 +45,7 @@ public class SettingFragment extends BaseFragment{
             super.handleMessage(msg);
             switch (msg.what){
                 case WHAT_UPDATE_TOTAL_USE_TIME :
-                    mTotalUseTimeTv.setText("Total Use time : " + SettingConfig.getTotalUseTime(getActivity()));
+                    mTotalUseTimeTv.setText("Total Use time : " + mTotalUseTime + "\nTotal Percent : " + mTotalUsePercent + "%");
                     break;
             }
         }
@@ -58,12 +69,25 @@ public class SettingFragment extends BaseFragment{
         cancelUpdateTodayUseTimer();
     }
 
+    private void setupPercent(){
+        if(mTotalUseTime <= 0 ){
+            mTotalUsePercent = 0;
+            return;
+        }
+        long mTotalTimeStart = SettingConfig.getTotalUseStartTime(getActivity());
+        long mTotalTimeFromStart = System.currentTimeMillis()/1000 - mTotalTimeStart;
+        mTotalUsePercent = (mTotalUseTime*100)/mTotalTimeFromStart;
+        if(mTotalUsePercent > 100) mTotalUsePercent = 100;
+    }
+
     private void startUpdateTodayUseTimer(){
         if(mUseTimer == null) {
             mUseTimer = new Timer();
             mUseTimer.scheduleAtFixedRate(new TimerTask() {
                 @Override
                 public void run() {
+                    mTotalUseTime = SettingConfig.getTotalUseTime(getActivity());
+                    setupPercent();
                     UiHandler.sendEmptyMessage(WHAT_UPDATE_TOTAL_USE_TIME);
                 }
             }, 1, 1 * 1000);
