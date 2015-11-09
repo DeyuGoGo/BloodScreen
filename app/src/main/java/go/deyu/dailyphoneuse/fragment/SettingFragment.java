@@ -1,5 +1,7 @@
-package go.deyu.bloodscreen.fragment;
+package go.deyu.dailyphoneuse.fragment;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -7,15 +9,20 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
 import butterknife.Bind;
 import butterknife.OnClick;
-import go.deyu.bloodscreen.R;
-import go.deyu.bloodscreen.SettingConfig;
+import go.deyu.dailyphoneuse.DrawService;
+import go.deyu.dailyphoneuse.R;
+import go.deyu.dailyphoneuse.SettingConfig;
 
 /**
  * Created by huangeyu on 15/11/3.
@@ -28,7 +35,13 @@ public class SettingFragment extends BaseFragment{
 
     private Timer mUseTimer = null;
 
+    private Context mContext;
+
+    private String[] imgs ;
+
     @Bind(R.id.tv_total_use_time)TextView mTotalUseTimeTv;
+
+    @Bind(R.id.spinner_image)Spinner mImgsSpinner;
 
     @OnClick(R.id.btn_init_total_time)
     public void initTotalTime(View v){
@@ -61,12 +74,39 @@ public class SettingFragment extends BaseFragment{
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         startUpdateTodayUseTimer();
+        setupSpinner();
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mContext = getActivity();
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         cancelUpdateTodayUseTimer();
+    }
+
+    private void setupSpinner(){
+        imgs = getActivity().getResources().getStringArray(R.array.imgs);
+        ArrayAdapter<String> stringArrayAdapter = new ArrayAdapter<String>(getActivity(),R.layout.support_simple_spinner_dropdown_item , imgs);
+        mImgsSpinner.setAdapter(stringArrayAdapter);
+        mImgsSpinner.setSelection(SettingConfig.getImageType(getActivity()));
+        mImgsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getActivity(),"Position :" + position + "Select : " + imgs[position],Toast.LENGTH_SHORT).show();
+                SettingConfig.setImageType(mContext,position);
+                Intent i = new Intent(mContext, DrawService.class);
+                i.setAction(DrawService.ACTION_REFRESH_VIEW);
+                mContext.startService(i);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
     }
 
     private void setupPercent(){

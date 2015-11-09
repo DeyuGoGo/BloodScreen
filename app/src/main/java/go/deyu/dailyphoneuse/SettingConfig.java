@@ -1,4 +1,4 @@
-package go.deyu.bloodscreen;
+package go.deyu.dailyphoneuse;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -12,6 +12,7 @@ public class SettingConfig {
     private final static String KEY_SETTING_COUNTING_OPEN = "counting.open";
     private final static String KEY_SETTING_TOTAL_USE_TIME = "use.time";
     private final static String KEY_SETTING_TOTAL_START_USE_TIME = "use.start.time";
+    private final static String KEY_SETTING_IMAGE_TYPE = "image.type";
 
     public static void setIsLoveOpen(Context context,boolean isOpen) {
         SharedPreferences prefs = context.getSharedPreferences(PERFERANCE_SETTING , Context.MODE_PRIVATE  );
@@ -59,5 +60,16 @@ public class SettingConfig {
     public static long getTotalUseStartTime(Context context){
         SharedPreferences prefs = context.getSharedPreferences(PERFERANCE_SETTING , Context.MODE_PRIVATE );
         return prefs.getLong(KEY_SETTING_TOTAL_START_USE_TIME, 0);
+    }
+    public static void setImageType(Context context,int type) {
+        SharedPreferences prefs = context.getSharedPreferences(PERFERANCE_SETTING , Context.MODE_PRIVATE );
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt(KEY_SETTING_IMAGE_TYPE, type);
+        editor.commit();
+    }
+
+    public static int getImageType(Context context){
+        SharedPreferences prefs = context.getSharedPreferences(PERFERANCE_SETTING , Context.MODE_PRIVATE );
+        return prefs.getInt(KEY_SETTING_IMAGE_TYPE, 0);
     }
 }

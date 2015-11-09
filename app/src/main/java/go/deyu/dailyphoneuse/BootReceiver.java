@@ -1,4 +1,4 @@
-package go.deyu.bloodscreen;
+package go.deyu.dailyphoneuse;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

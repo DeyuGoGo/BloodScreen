@@ -1,4 +1,4 @@
-package go.deyu.bloodscreen.alarm;
+package go.deyu.dailyphoneuse.alarm;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;

@@ -1,4 +1,4 @@
-package go.deyu.bloodscreen;
+package go.deyu.dailyphoneuse;
 
 import android.app.Service;
 import android.content.Intent;
@@ -9,8 +9,8 @@ import android.view.WindowManager;
 
 import java.util.Timer;
 
-import go.deyu.bloodscreen.alarm.ChangeDayAlarm;
-import go.deyu.bloodscreen.app.app;
+import go.deyu.dailyphoneuse.alarm.ChangeDayAlarm;
+import go.deyu.dailyphoneuse.app.app;
 import go.deyu.util.DailyCheck;
 import go.deyu.util.LOG;
 
@@ -29,6 +29,8 @@ public class DrawService extends Service implements BloodControllerInterface{
 
     public static final String ACTION_CHECK_CHANGE_DAY = "action.check.change.day" ;
 
+    public static final String ACTION_REFRESH_VIEW = "action.refresh.view" ;
+
     private BloodView mBloodView = null;
     private BloodModelInterface model ;
     private PhoneUseReceiver mPhoneUseReceiver;
@@ -36,6 +38,14 @@ public class DrawService extends Service implements BloodControllerInterface{
     private Timer mAddUseTimer = null;
     private WindowManager wm;
     private boolean mIsShowView = false;
+
+    private BloodModel.OnCountChangeListener listener = new BloodModel.OnCountChangeListener() {
+        @Override
+        public void OnCountChange() {
+            if(mIsShowView)
+                mBloodView.postInvalidate();
+        }
+    };
 
     public DrawService() {
     }
@@ -47,6 +57,7 @@ public class DrawService extends Service implements BloodControllerInterface{
         super.onCreate();
         wm = (WindowManager) getSystemService(WINDOW_SERVICE);
         this.model = app.App.model;
+        model.setmListener(listener);
         initReceiver();
     }
 
@@ -80,6 +91,12 @@ public class DrawService extends Service implements BloodControllerInterface{
         }
         if(intent.getAction().equals(ACTION_CHECK_CHANGE_DAY)){
             checkDayChange();
+        }
+        if(intent.getAction().equals(ACTION_REFRESH_VIEW)){
+            if(SettingConfig.getIsLoveOpen(this)){
+                dismissBloodView();
+                showBloodView();
+            }
         }
         return START_STICKY;
     }
@@ -129,6 +146,7 @@ public class DrawService extends Service implements BloodControllerInterface{
     @Override
     public void onDestroy() {
         super.onDestroy();
+        model.setmListener(null);
         if(mPhoneUseReceiver!=null)
             unregisterReceiver(mPhoneUseReceiver);
         if(mIsShowView)
@@ -146,11 +164,7 @@ public class DrawService extends Service implements BloodControllerInterface{
     @Override
     public void addUseSecond() {
         LOG.d(TAG, "addBlood");
-        long i = model.getUseTime();
-        i++;
-        model.setUseTime(i);
-        if(mIsShowView)
-            mBloodView.postInvalidate();
+        model.incrementUseTime();
     }
 
     @Override
@@ -195,4 +209,5 @@ public class DrawService extends Service implements BloodControllerInterface{
             mAddUseTimer = null;
         }
     }
+
 }

@@ -1,4 +1,4 @@
-package go.deyu.bloodscreen;
+package go.deyu.dailyphoneuse;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,8 +8,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import go.deyu.bloodscreen.fragment.MainFragment;
-import go.deyu.bloodscreen.fragment.SettingFragment;
+import go.deyu.dailyphoneuse.fragment.MainFragment;
+import go.deyu.dailyphoneuse.fragment.SettingFragment;
 
 
 public class MainActivity extends AppCompatActivity {

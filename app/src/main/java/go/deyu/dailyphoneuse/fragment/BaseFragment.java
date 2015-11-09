@@ -1,4 +1,4 @@
-package go.deyu.bloodscreen.fragment;
+package go.deyu.dailyphoneuse.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

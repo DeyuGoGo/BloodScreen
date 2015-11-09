@@ -1,4 +1,4 @@
-package go.deyu.bloodscreen;
+package go.deyu.dailyphoneuse;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -9,9 +9,11 @@ import android.view.View;
 
 import java.util.Random;
 
-import go.deyu.bloodscreen.BloodBitmapFactory.BloodBitmapFactory;
-import go.deyu.bloodscreen.BloodBitmapFactory.ResourceBloodBitmapFactory;
-import go.deyu.bloodscreen.app.app;
+import go.deyu.dailyphoneuse.BloodBitmapFactory.BloodBitmapFactory;
+import go.deyu.dailyphoneuse.BloodBitmapFactory.CircleBloodBitmapFactory;
+import go.deyu.dailyphoneuse.BloodBitmapFactory.ImageType;
+import go.deyu.dailyphoneuse.BloodBitmapFactory.ResourceBloodBitmapFactory;
+import go.deyu.dailyphoneuse.app.app;
 import go.deyu.util.LOG;
 
 
@@ -44,7 +46,17 @@ public class BloodView extends View {
     private void init() {
         mHolder = new holder();
         mRandom = new Random();
-        mBloodBitmapFactory = new ResourceBloodBitmapFactory(getContext());
+        switch (SettingConfig.getImageType(getContext())){
+            case BloodBitmapFactory.TYPE_BLOOD:
+                mBloodBitmapFactory = new ResourceBloodBitmapFactory(getContext() , ImageType.BLOOD);
+                break;
+            case BloodBitmapFactory.TYPE_CANDY:
+                mBloodBitmapFactory = new ResourceBloodBitmapFactory(getContext(),ImageType.CANDY);
+                break;
+            case BloodBitmapFactory.TYPE_CIRCLE:
+                mBloodBitmapFactory = new CircleBloodBitmapFactory();
+                break;
+        }
     }
 
     public void setBloodBitmapFactory(BloodBitmapFactory factory){

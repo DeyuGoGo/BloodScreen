@@ -1,11 +1,11 @@
-package go.deyu.bloodscreen.app;
+package go.deyu.dailyphoneuse.app;
 
 import android.app.Application;
 import android.content.Intent;
 
-import go.deyu.bloodscreen.BloodModel;
-import go.deyu.bloodscreen.BloodModelInterface;
-import go.deyu.bloodscreen.DrawService;
+import go.deyu.dailyphoneuse.BloodModel;
+import go.deyu.dailyphoneuse.BloodModelInterface;
+import go.deyu.dailyphoneuse.DrawService;
 import go.deyu.util.AppContextSingleton;
 import go.deyu.util.DeviceStatus;
 import go.deyu.util.LOG;
