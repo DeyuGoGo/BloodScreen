@@ -1,10 +1,11 @@
-package go.deyu.bloodscreen.app;
+package go.deyu.dailyphoneuse.app;
 
 import android.app.Application;
+import android.content.Intent;
 
-import go.deyu.bloodscreen.BloodControllerInterface;
-import go.deyu.bloodscreen.BloodModel;
-import go.deyu.bloodscreen.BloodModelInterface;
+import go.deyu.dailyphoneuse.BloodModel;
+import go.deyu.dailyphoneuse.BloodModelInterface;
+import go.deyu.dailyphoneuse.DrawService;
 import go.deyu.util.AppContextSingleton;
 import go.deyu.util.DeviceStatus;
 import go.deyu.util.LOG;
@@ -15,8 +16,7 @@ import go.deyu.util.LOG;
 public class app extends Application{
 
     public volatile static app App;
-    public BloodModelInterface model ;
-    public BloodControllerInterface controller;
+    public static BloodModelInterface model ;
 
     public app() {
         super();
@@ -30,6 +30,7 @@ public class app extends Application{
         DeviceStatus.initialize(this);
         LOG.LOGTAG = getString(getApplicationInfo().labelRes);
         model = new BloodModel(this);
+        startService(new Intent(this, DrawService.class));
     }
 
 }
