@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="go.deyu.bloodscreen"
+    package="go.deyu.dailyphoneuse"
     android:versionCode="1"
     android:versionName="大小不同版">
 
@@ -9,32 +9,50 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
-        android:name=".app.app"
+        android:name="go.deyu.dailyphoneuse.app.app"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/icon"
         android:label="@string/app_name"
+        android:supportsRtl="true"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name="go.deyu.dailyphoneuse.MainActivity"
+            android:screenOrientation="portrait"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <service
-            android:name=".DrawService"
+            android:name="go.deyu.dailyphoneuse.DrawService"
             android:enabled="true"
             android:exported="true" >
         </service>
 
         <receiver
-            android:name=".PhoneUseReceiver"
+            android:name="go.deyu.dailyphoneuse.PhoneUseReceiver"
             android:enabled="true"
             android:exported="true" >
         </receiver>
+
+        <receiver
+            android:name="go.deyu.dailyphoneuse.BootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+            </intent-filter>
+        </receiver>
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <activity
+            android:name="com.google.android.gms.ads.AdActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
+            android:theme="@android:style/Theme.Translucent" />
     </application>
 
 </manifest>

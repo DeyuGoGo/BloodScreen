@@ -1,4 +1,4 @@
-package go.deyu.bloodscreen.BloodBitmapFactory;
+package go.deyu.dailyphoneuse.BloodBitmapFactory;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;

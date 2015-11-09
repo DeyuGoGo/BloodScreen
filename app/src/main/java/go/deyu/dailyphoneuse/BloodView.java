@@ -1,4 +1,4 @@
-package go.deyu.bloodscreen;
+package go.deyu.dailyphoneuse;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -9,14 +9,14 @@ import android.view.View;
 
 import java.util.Random;
 
-import go.deyu.bloodscreen.BloodBitmapFactory.BloodBitmapFactory;
-import go.deyu.bloodscreen.BloodBitmapFactory.ResourceBloodBitmapFactory;
-import go.deyu.bloodscreen.app.app;
+import go.deyu.dailyphoneuse.BloodBitmapFactory.BloodBitmapFactory;
+import go.deyu.dailyphoneuse.BloodBitmapFactory.CircleBloodBitmapFactory;
+import go.deyu.dailyphoneuse.BloodBitmapFactory.ImageType;
+import go.deyu.dailyphoneuse.BloodBitmapFactory.ResourceBloodBitmapFactory;
+import go.deyu.dailyphoneuse.app.app;
+import go.deyu.util.LOG;
 
 
-/**
- * TODO: document your custom view class.
- */
 public class BloodView extends View {
 
     protected Random mRandom;
@@ -46,7 +46,17 @@ public class BloodView extends View {
     private void init() {
         mHolder = new holder();
         mRandom = new Random();
-        mBloodBitmapFactory = new ResourceBloodBitmapFactory(getContext());
+        switch (SettingConfig.getImageType(getContext())){
+            case BloodBitmapFactory.TYPE_BLOOD:
+                mBloodBitmapFactory = new ResourceBloodBitmapFactory(getContext() , ImageType.BLOOD);
+                break;
+            case BloodBitmapFactory.TYPE_CANDY:
+                mBloodBitmapFactory = new ResourceBloodBitmapFactory(getContext(),ImageType.CANDY);
+                break;
+            case BloodBitmapFactory.TYPE_CIRCLE:
+                mBloodBitmapFactory = new CircleBloodBitmapFactory();
+                break;
+        }
     }
 
     public void setBloodBitmapFactory(BloodBitmapFactory factory){
@@ -56,7 +66,7 @@ public class BloodView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        LOG.d(TAG,"OnDraw");
+        LOG.d(TAG, "OnDraw");
         drawBloods(mHolder.canvas);
         Bitmap bitmap = mHolder.bitmap;
         LOG.d(TAG,"OnDraw : bitmap.getWidth() : " + bitmap.getWidth());
@@ -73,8 +83,8 @@ public class BloodView extends View {
     }
 
     private void drawBloods(Canvas canvas) {
-        int len = app.App.model.getBlood();
-        for (int i = mHolder.blood_number; i < len; i++) {
+        long len = app.App.model.getBlood();
+        for (long i = mHolder.blood_number; i < len; i++) {
             drawBlood(canvas);
         }
         mHolder.blood_number = len;
@@ -94,7 +104,7 @@ public class BloodView extends View {
     }
 
     class holder {
-        public int blood_number = 0;
+        public long blood_number = 0;
         public Canvas canvas = null;
         public Bitmap bitmap = null;
         public int maxX;
