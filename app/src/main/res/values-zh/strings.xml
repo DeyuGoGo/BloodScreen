@@ -1,5 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">每天是多愛用</string>
     <string name="action_settings">設定</string>
     <string name="action_back">返回</string>
+    <string name="today_use_state">使用情形</string>
+    <string name="use">使用:</string>
+    <string name="no_use">未使用:</string>
+    <string name="desktop">桌布</string>
+    <string name="start_counting">開始計算</string>
+    <string name="reset">重置</string>
+    <string name="desktop_type">桌布類型</string>
+    <array name="imgs">
+        <item>糖果</item>
+        <item>血跡</item>
+        <item>圓形</item>
+    </array>
+    <string-array name="lv0_user">
+        <item>你大概是不會用手機吧</item>
+        <item>可以換支便宜的手機了</item>
+        <item>確認一下在褲子裡的是手機還是磚頭！</item>
+        <item>有空幫我按個下面廣告</item>
+    </string-array>
+    <string-array name="lv1_user">
+        <item>今天很忙喔</item>
+        <item>記得回Line喔</item>
+        <item>你的使用次數，不如把手機拿去墊桌腳</item>
+        <item>需要請您孫子教一下怎麼用智慧型手機嗎？</item>
+        <item>有空幫我按個下面廣告</item>
+    </string-array>
+    <string-array name="lv2_user">
+        <item>這使用量還行</item>
+        <item>八二比例的完美使用</item>
+        <item>你的手機應該跟3310一樣七天充一次電就可以了吧</item>
+        <item>有空幫我按個下面廣告</item>
+    </string-array>
+    <string-array name="lv3_user">
+        <item>正常很正常的使用</item>
+        <item>不知道說什麼</item>
+        <item>是窮到買不起手錶嗎？看時間也要用手機？</item>
+        <item>有空幫我按個下面廣告</item>
+    </string-array>
+    <string-array name="lv4_user">
+        <item>三餐不能少了你</item>
+        <item>手機以外的世界也不錯喔</item>
+        <item>啊啊！好痛</item>
+        <item>有空幫我按個下面廣告</item>
+    </string-array>
+    <string-array name="lv5_user">
+        <item>時時想到手機</item>
+        <item>比一般人還會用一點</item>
+        <item>有空幫我按個下面廣告</item>
+    </string-array>
+    <string-array name="lv6_user">
+        <item>不離不棄</item>
+        <item>別再戳啦！</item>
+        <item>對啦，你的line又響了</item>
+        <item>有空幫我按個下面廣告</item>
+    </string-array>
+    <string-array name="lv7_user">
+        <item>你女友知道你握的最久的不是她的手，是手機嗎</item>
+        <item>這個屌屌的</item>
+        <item>有空幫我按個下面廣告</item>
+    </string-array>
+    <string-array name="lv8_user">
+        <item>你女友不會吃醋？</item>
+        <item>手機快燒掉囉～</item>
+        <item>有空幫我按個下面廣告</item>
+    </string-array>
+    <string-array name="lv9_user">
+        <item>你不在我怎能獨活</item>
+        <item>這使用量你敢信？</item>
+        <item>有空幫我按個下面廣告</item>
+    </string-array>
 </resources>

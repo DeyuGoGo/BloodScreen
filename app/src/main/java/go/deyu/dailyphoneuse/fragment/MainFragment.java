@@ -18,7 +18,6 @@ import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
-import android.widget.Toast;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
@@ -173,6 +172,10 @@ public class MainFragment extends BaseFragment implements OnChartValueSelectedLi
         int nowMin = c.get(Calendar.MINUTE);
         int nowSecond = c.get(Calendar.SECOND);
         mTodayPassTime = (nowHour*60*60) + (nowMin*60) + nowSecond;
+        if(mTodayPassTime <= 0 ){
+            mPercent =0 ;
+            return;
+        }
         mPercent = ((mTodayUseTime*100 )/ mTodayPassTime);
         if(mPercent > 100 ) mPercent = 100;
     }
@@ -219,13 +222,7 @@ public class MainFragment extends BaseFragment implements OnChartValueSelectedLi
 
     private SpannableString generateCenterSpannableText() {
         String[] des;
-        int id = 0;
-        if(mPercent>40)
-            id = R.array.high_user;
-        else if(mPercent>20)
-            id = R.array.mid_user;
-        else id = R.array.low_user;
-        des = getResources().getStringArray(id);
+        des = getResources().getStringArray(getDesArrayId(mPercent));
         Random r = new Random();
         SpannableString s = new SpannableString(des[r.nextInt(des.length)]);
         s.setSpan(new RelativeSizeSpan(1.7f), 0, s.length() , 0);
@@ -241,7 +238,6 @@ public class MainFragment extends BaseFragment implements OnChartValueSelectedLi
         mImgsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getActivity(), "Position :" + position + "Select : " + imgs[position], Toast.LENGTH_SHORT).show();
                 SettingConfig.setImageType(mContext, position);
                 Intent i = new Intent(mContext, DrawService.class);
                 i.setAction(DrawService.ACTION_REFRESH_VIEW);
@@ -254,6 +250,28 @@ public class MainFragment extends BaseFragment implements OnChartValueSelectedLi
         });
     }
 
+    private int getDesArrayId(long percent){
+        if(percent>90)
+            return R.array.lv9_user;
+        else if(mPercent>80)
+            return R.array.lv8_user;
+        else if(mPercent>70)
+            return R.array.lv7_user;
+        else if(mPercent>60)
+            return R.array.lv6_user;
+        else if(mPercent>50)
+            return R.array.lv5_user;
+        else if(mPercent>40)
+            return R.array.lv4_user;
+        else if(mPercent>30)
+            return R.array.lv3_user;
+        else if(mPercent>20)
+            return R.array.lv2_user;
+        else if(mPercent>10)
+            return R.array.lv1_user;
+        else return R.array.lv0_user;
+    }
+
     private void setData(long phoneusePercent) {
 
         ArrayList<Entry> yVals1 = new ArrayList<Entry>();
@@ -261,30 +279,24 @@ public class MainFragment extends BaseFragment implements OnChartValueSelectedLi
         yVals1.add(new Entry((float)(100 - phoneusePercent),1));
 
         ArrayList<String> xVals = new ArrayList<String>();
-        xVals.add(strUse+ TimeUtil.secondToHMS(mTodayUseTime));
-        xVals.add(strNoUse + TimeUtil.secondToHMS(mTodayPassTime-mTodayUseTime));
-        PieDataSet dataSet = new PieDataSet(yVals1, "Use state");
+        xVals.add(strUse + TimeUtil.secondToHMS(mTodayUseTime));
+        xVals.add(strNoUse + TimeUtil.secondToHMS(mTodayPassTime - mTodayUseTime));
+        PieDataSet dataSet = new PieDataSet(yVals1, getResources().getString(R.string.today_use_state));
         dataSet.setSliceSpace(2f);
         dataSet.setSelectionShift(5f);
 
         ArrayList<Integer> colors = new ArrayList<Integer>();
 
-        for (int c : ColorTemplate.COLORFUL_COLORS)
-            colors.add(c);
-
-        for (int c : ColorTemplate.LIBERTY_COLORS)
-            colors.add(c);
-
-        for (int c : ColorTemplate.PASTEL_COLORS)
-            colors.add(c);
-
-        for (int c : ColorTemplate.VORDIPLOM_COLORS)
-            colors.add(c);
-
         for (int c : ColorTemplate.JOYFUL_COLORS)
             colors.add(c);
-
-
+        for (int c : ColorTemplate.VORDIPLOM_COLORS)
+            colors.add(c);
+        for (int c : ColorTemplate.PASTEL_COLORS)
+            colors.add(c);
+        for (int c : ColorTemplate.COLORFUL_COLORS)
+            colors.add(c);
+        for (int c : ColorTemplate.LIBERTY_COLORS)
+            colors.add(c);
         colors.add(ColorTemplate.getHoloBlue());
 
         dataSet.setColors(colors);

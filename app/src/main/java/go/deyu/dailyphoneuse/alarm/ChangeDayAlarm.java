@@ -5,12 +5,19 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
+import go.deyu.util.LOG;
 
 /**
  * Created by huangeyu on 15/11/4.
  */
 public class ChangeDayAlarm {
+
+    private static  final String TAG = "ChangeDayAlarm";
+    static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
 
     public static void setChangeDayAlarmStartService(Context context , Intent i){
 
@@ -28,5 +35,8 @@ public class ChangeDayAlarm {
         PendingIntent pi = PendingIntent.getService(context, 0, i , PendingIntent.FLAG_ONE_SHOT);
         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pi);
+        LOG.d(TAG , "set Time : " + sdf.format(cal.getTime()));
+
     }
+
 }

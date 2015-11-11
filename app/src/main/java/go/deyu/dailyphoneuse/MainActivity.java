@@ -8,6 +8,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
 import go.deyu.dailyphoneuse.fragment.MainFragment;
 import go.deyu.dailyphoneuse.fragment.SettingFragment;
 
@@ -33,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
                     .commit();
         }
         initToolBar();
+        showAd();
     }
 
 
@@ -67,9 +71,21 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    private void showAd(){
+        String My_DeviceId = getResources().getString(R.string.my_device_id_md5);
+        AdView mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest request = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)        // All emulators
+                .addTestDevice(My_DeviceId)        // All emulators
+                .build();
+        if(!request.isTestDevice(this))
+            mAdView.loadAd(request);
+    }
+
     private void initToolBar(){
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
-        myToolbar.setLogo(R.drawable.phoneuselogo);
+        myToolbar.setLogo(R.drawable.titlelogo);
     }
 }

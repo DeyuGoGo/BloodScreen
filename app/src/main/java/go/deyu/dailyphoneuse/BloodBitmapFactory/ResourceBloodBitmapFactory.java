@@ -33,11 +33,14 @@ public class ResourceBloodBitmapFactory implements BloodBitmapFactory{
                 bitmaps[3] = BitmapFactory.decodeResource(res, R.drawable.blood4);
                 break;
             case CANDY:
-                bitmaps = new Bitmap[4];
+                bitmaps = new Bitmap[7];
                 bitmaps[0] = BitmapFactory.decodeResource(res, R.drawable.candy1);
                 bitmaps[1] = BitmapFactory.decodeResource(res, R.drawable.candy2);
                 bitmaps[2] = BitmapFactory.decodeResource(res, R.drawable.candy3);
                 bitmaps[3] = BitmapFactory.decodeResource(res, R.drawable.candy4);
+                bitmaps[4] = BitmapFactory.decodeResource(res, R.drawable.candy5);
+                bitmaps[5] = BitmapFactory.decodeResource(res, R.drawable.candy6);
+                bitmaps[6] = BitmapFactory.decodeResource(res, R.drawable.candy7);
                 break;
         }
 

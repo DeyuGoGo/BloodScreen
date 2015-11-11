@@ -14,17 +14,38 @@
     <string name="banner_ad_unit_id">ca-app-pub-9829418644772076/1192964746</string>
     <string name="banner_ad_unit_id_test">ca-app-pub-3940256099942544/6300978111</string>
     <array name="imgs">
-        <item>Blood</item>
         <item>Candy</item>
+        <item>Blood</item>
         <item>Circle</item>
     </array>
-    <string-array name="high_user">
+    <string-array name="lv0_user">
+        <item>No love</item>
+    </string-array>
+    <string-array name="lv1_user">
+        <item>No love</item>
+    </string-array>
+    <string-array name="lv2_user">
+        <item>Normal Use</item>
+    </string-array>
+    <string-array name="lv3_user">
+        <item>Normal Use</item>
+    </string-array>
+    <string-array name="lv4_user">
+        <item>Normal Use</item>
+    </string-array>
+    <string-array name="lv5_user">
+        <item>Normal Use</item>
+    </string-array>
+    <string-array name="lv6_user">
         <item>Phone mad</item>
     </string-array>
-    <string-array name="mid_user">
-        <item>Normal use with phone</item>
+    <string-array name="lv7_user">
+        <item>Phone mad</item>
     </string-array>
-    <string-array name="low_user">
-        <item>No love with phone</item>
+    <string-array name="lv8_user">
+        <item>Phone mad</item>
+    </string-array>
+    <string-array name="lv9_user">
+        <item>Phone mad</item>
     </string-array>
 </resources>

@@ -7,6 +7,7 @@ import android.graphics.PixelFormat;
 import android.os.IBinder;
 import android.view.WindowManager;
 
+import java.util.Calendar;
 import java.util.Timer;
 
 import go.deyu.dailyphoneuse.alarm.ChangeDayAlarm;
@@ -90,6 +91,7 @@ public class DrawService extends Service implements BloodControllerInterface{
             dismissBloodView();
         }
         if(intent.getAction().equals(ACTION_CHECK_CHANGE_DAY)){
+            LOG.d(TAG,"ACTION_CHECK_CHANGE_DAY");
             checkDayChange();
         }
         if(intent.getAction().equals(ACTION_REFRESH_VIEW)){
@@ -163,7 +165,7 @@ public class DrawService extends Service implements BloodControllerInterface{
 
     @Override
     public void addUseSecond() {
-        LOG.d(TAG, "addBlood");
+        LOG.d(TAG, "addUseSecond");
         model.incrementUseTime();
     }
 
@@ -184,17 +186,23 @@ public class DrawService extends Service implements BloodControllerInterface{
     }
 
     private void checkDayChange(){
+        LOG.d(TAG,"ACTION_CHECK_CHANGE_DAY is ChangeDay " + DailyCheck.isChangeDay());
+        Calendar cal = Calendar.getInstance();
+        int nowDate = cal.get(Calendar.DAY_OF_YEAR);
+        LOG.d(TAG,"Now Day " + nowDate);
         if(DailyCheck.isChangeDay())
             resetDailyCount();
     }
 
     private void resetDailyCount(){
-        Intent i = new Intent(this,DrawService.class);
+        Intent i = new Intent(getApplicationContext() ,DrawService.class);
         i.setAction(ACTION_CHECK_CHANGE_DAY);
-        ChangeDayAlarm.setChangeDayAlarmStartService(this,i);
+        ChangeDayAlarm.setChangeDayAlarmStartService(getApplicationContext() , i);
         cleanBlood();
         DailyCheck.updateDayTime();
     }
+
+
 
     private void startAddBloodTimer(){
         if(mAddUseTimer == null) {

@@ -12,6 +12,7 @@ public class BloodModel implements BloodModelInterface{
     private long needAdd = 0;
     private boolean isCountChange = true;
     private int howManySecondOneBlood = 5;
+    private int MaxSecondAdd = 160;
     private final SharedPreferences prefs;
     private final String BLOOD_PERFERANCE_NAME = "Blood_Perferance";
     private final String KEY_USE_TIME_COUNT = "use.time.count";
@@ -60,7 +61,7 @@ public class BloodModel implements BloodModelInterface{
         needAdd -= howManySecondOneBlood;
         BloodCount++;
         isCountChange = true;
-        if(howManySecondOneBlood<60)howManySecondOneBlood++;
+        if(howManySecondOneBlood<MaxSecondAdd)howManySecondOneBlood+=5;
         setupNextTime();
     }
 
