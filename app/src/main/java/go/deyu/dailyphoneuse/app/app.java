@@ -29,6 +29,7 @@ public class app extends Application{
         AppContextSingleton.initialize(this);
         DeviceStatus.initialize(this);
         LOG.LOGTAG = getString(getApplicationInfo().labelRes);
+        LOG.DEBUG = false;
         model = new BloodModel(this);
         startService(new Intent(this, DrawService.class));
     }

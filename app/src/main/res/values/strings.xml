@@ -11,7 +11,7 @@
     <string name="start_counting">Start counting</string>
     <string name="reset">Reset</string>
     <string name="desktop_type">Desktop Type</string>
-    <string name="banner_ad_unit_id">ca-app-pub-9829418644772076/1192964746</string>
+    <string name="banner_ad_unit_id">ca-app-pub-9829418644772076/4065595541</string>
     <string name="banner_ad_unit_id_test">ca-app-pub-3940256099942544/6300978111</string>
     <array name="imgs">
         <item>Candy</item>
@@ -20,32 +20,36 @@
     </array>
     <string-array name="lv0_user">
         <item>No love</item>
+        <item>Confirm that the in the pants is phone or a brick!</item>
     </string-array>
     <string-array name="lv1_user">
-        <item>No love</item>
+        <item>Do you know how to use phone?</item>
+        <item>Are you busy today?</item>
     </string-array>
     <string-array name="lv2_user">
         <item>Normal Use</item>
     </string-array>
     <string-array name="lv3_user">
-        <item>Normal Use</item>
+        <item>Don't know what to say</item>
+        <item>Can't afford to watch? Always use phone know time? </item>
     </string-array>
     <string-array name="lv4_user">
-        <item>Normal Use</item>
+        <item>Oops~</item>
+        <item>Every meals watch phone?</item>
     </string-array>
     <string-array name="lv5_user">
-        <item>Normal Use</item>
+        <item>Always thinking the phone?</item>
     </string-array>
     <string-array name="lv6_user">
-        <item>Phone mad</item>
+        <item>Do not poke it! </item>
     </string-array>
     <string-array name="lv7_user">
-        <item>Phone mad</item>
+        <item>Your girlfriend know that you hold the longest not her hand, is phone</item>
     </string-array>
     <string-array name="lv8_user">
-        <item>Phone mad</item>
+        <item>Phone ready burn ~</item>
     </string-array>
     <string-array name="lv9_user">
-        <item>Phone mad</item>
+        <item>This uses the amount you dare believe?</item>
     </string-array>
 </resources>
