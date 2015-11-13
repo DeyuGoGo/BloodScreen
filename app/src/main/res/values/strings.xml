@@ -30,8 +30,8 @@
         <item>Normal Use</item>
     </string-array>
     <string-array name="lv3_user">
-        <item>Don't know what to say</item>
-        <item>Can't afford to watch? Always use phone know time? </item>
+        <item>Don\'t know what to say</item>
+        <item>Can\'t afford to watch? Always use phone know time? </item>
     </string-array>
     <string-array name="lv4_user">
         <item>Oops~</item>
